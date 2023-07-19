@@ -1,0 +1,65 @@
+Requirements
+This program has been developed for the Tomcat 7.0.47 version. It has not been tested on other versions. 
+It does not work under java8. It will run under java 7 and maybe 5 or 6.
+
+Installation steps
+*** Setting up a production database ***
+Make a copy without the ".template-extension" on the "src\main\resources\META-INF\persistence.xml.template"-file.
+Fill in values for url, database-name, user and password to the production-database under the 
+persistence-unit "rut-prod".   
+
+Open a mysql client in the installation-directory as a root-user. 
+Execute the following commands:
+create database PROD_DB_NAME;
+CREATE USER 'PROD_USER'@'%' IDENTIFIED BY 'PROD_PASSWORD';
+grant all on PROD_DB_NAME.* to 'PROD_USER'@'%';
+Log into Mysql and do "source rutcompany.sql" or "mysql < rutcompany.sql" from shell.
+
+*** Tomcat configuration - create an user-account ***
+A user with role "rut-user" must be configured in Tomcat in order to be able to log in to the application using whatever Realm is configured (i.e. conf/tomcat-users.xml in default configuration).
+
+
+
+*** Deploying with Maven ***
+In order to upload the application to Tomcat, you need to create a user in Tomcat with the role "manager-script". Same procedure as with an user-account. 
+You also must tell maven the "manager-script"-accounts username and password. 
+You specify these in a ~/.m2/settings.xml.
+
+<settings>
+<servers>
+<server>
+<id>dev-tomcat</id>
+<username>MANAGER-SCRIPT-USERNAME</username>
+<password>MANAGER-SCRIPT-PASSWORD</password>
+</server>
+</servers>
+</settings>
+
+Note that the <id>-tag must match the <server>-tag in pom.xml under the tomcat7-maven-plugin. 
+
+*** Deploying with Maven - Testing ***
+As part of the lifecycle of deploying to a server, Maven runs tests. 
+These tests require a testing database to be set up. 
+The steps are the same as for a production database except the persistence
+ unit to modify is "rut-test" in the same file. Please make sure you have two
+different databases for production and testing.  
+
+*** Util-library ***
+The seigorpiltzutil-library must be checked out of Sourceforge.
+Just run mvn install inside the code-directory and it will deployed to the local Maven-repo.
+
+*** Deploying with Maven - Deploy """
+Just run mvn tomcat7:redeploy or mvn tomcat7:deploy.
+
+
+
+
+Deploying with Ant
+Since this project is using Maven this is old information and has not been tested in a long time. The build.xml is still there though. 
+If you are using the catalina Ant-tasks to install to Tomcat, 
+the following jars must be availiable to Ant. 
+catalina-ant.jar
+tomcat-coyote.jar
+tomcat-util.jar
+
+They can be copied to Ant:s lib-directory. 

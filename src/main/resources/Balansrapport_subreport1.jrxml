@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Balansrapport_subreport1" language="groovy" pageWidth="555" pageHeight="802" columnWidth="555" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="aa093417-cfef-4fe8-947d-6626ba370dd3">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="entity" class="java.lang.Integer"/>
+	<parameter name="balanceDate" class="java.lang.String"/>
+	<parameter name="accountClass" class="java.lang.Integer"/>
+	<queryString>
+		<![CDATA[select A.id, accountClass, name, sum(amount) as summa from Account as A, Part as P, Transaction as T where A.book_id = $P{entity} AND A.id = P.account_id AND T.id = P.transaction_id
+AND DATE(T.dateNoticed) <= $P{balanceDate}
+AND accountClass = $P{accountClass}
+GROUP BY A.id order by accountClass, name;]]>
+	</queryString>
+	<field name="id" class="java.lang.Long">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="accountClass" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="name" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="summa" class="java.math.BigDecimal"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band splitType="Stretch"/>
+	</title>
+	<pageHeader>
+		<band splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band splitType="Stretch"/>
+	</columnHeader>
+	<detail>
+		<band height="21" splitType="Stretch">
+			<textField>
+				<reportElement x="0" y="0" width="298" height="20" uuid="0f56c647-f7af-41b4-a9b9-88e22d5e54af"/>
+				<textFieldExpression><![CDATA[$F{name}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="310" y="0" width="100" height="20" uuid="d400d95d-d00a-4a2e-8005-f1fa2b95ebd5"/>
+				<textFieldExpression><![CDATA[$F{summa}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band splitType="Stretch"/>
+	</summary>
+</jasperReport>

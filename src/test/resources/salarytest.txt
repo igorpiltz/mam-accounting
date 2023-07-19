@@ -1,0 +1,10 @@
+print(book);
+var sales = 1;
+tf.add(3, sales);
+tf.add(2, -0.3242*sales);
+tf.addBalance(1); 
+
+print(tf.getTransaction().toString());
+
+
+

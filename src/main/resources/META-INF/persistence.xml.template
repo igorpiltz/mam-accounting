@@ -1,0 +1,42 @@
+<persistence xmlns="http://java.sun.com/xml/ns/persistence"
+             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+             xsi:schemaLocation="http://java.sun.com/xml/ns/persistence http://java.sun.com/xml/ns/persistence/persistence_2_0.xsd"
+             version="2.0">
+   <persistence-unit name="rut-test">
+	<provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
+      <properties>
+        <property name="hibernate.dialect" value="org.hibernate.dialect.MySQLDialect"/>
+       	<property name="hibernate.hbm2ddl.auto" value="update"/>
+         
+        <property name="javax.persistence.jdbc.driver" value="com.mysql.jdbc.Driver" />
+      	<property name="javax.persistence.jdbc.url" 
+        value="jdbc:mysql://TEST_URL/TEST_DB" />
+      	<property name="javax.persistence.jdbc.user" value="TEST_USER" />
+      	<property name="javax.persistence.jdbc.password" value="TEST_PASSWORD" />
+        
+        <property name="org.hibernate.flushMode" value="ALWAYS"/>
+      </properties>
+   </persistence-unit>
+   
+   <persistence-unit name="rut-prod">
+	<provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
+      <properties>
+        <property name="hibernate.dialect" value="org.hibernate.dialect.MySQLDialect"/>
+         
+        <property name="javax.persistence.jdbc.driver" value="com.mysql.jdbc.Driver" />
+      	<property name="javax.persistence.jdbc.url" 
+        value="jdbc:mysql://PROD_URL/PROD_DB" />
+      	<property name="javax.persistence.jdbc.user" value="PROD_USER" />
+      	<property name="javax.persistence.jdbc.password" value="PROD_PASSWORD" />
+      	
+      	<property name="org.hibernate.flushMode" value="ALWAYS"/>
+
+        <!-- C3p0 Config -->
+        <property name="hibernate.connection.provider_class"
+          value="org.hibernate.connection.C3P0ConnectionProvider" />
+
+        <property name="hibernate.c3p0.timeout" value="14400" />
+        
+      </properties>
+   </persistence-unit>
+</persistence>

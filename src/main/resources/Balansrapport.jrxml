@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report1" language="groovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="220ad381-6e9f-4e8f-9d76-96fa54155b56">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="SUBREPORT_DIR" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA[".\\"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="balanceDate" class="java.lang.String">
+		<defaultValueExpression><![CDATA[2014-02-01]]></defaultValueExpression>
+	</parameter>
+	<parameter name="entity" class="java.lang.Integer"/>
+	<queryString>
+		<![CDATA[select accountClass,
+IF(accountClass = 0, "Tillgångar", IF(accountClass = 1, "Skulder", "Kapital")) as name,
+sum(amount) as summa,
+C.name as companyName
+from Account as A, Part as P, Transaction as T, Company as C
+where A.book_id = $P{entity} AND
+A.id = P.account_id AND
+T.id = P.transaction_id AND
+C.id = $P{entity} AND
+DATE(T.dateNoticed) <= $P{balanceDate} AND
+accountClass IN (0, 1, 4)
+GROUP BY accountClass
+order by accountClass;]]>
+	</queryString>
+	<field name="accountClass" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="name" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="summa" class="java.math.BigDecimal"/>
+	<field name="companyName" class="java.lang.String"/>
+	<variable name="summa_1" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{summa}]]></variableExpression>
+	</variable>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="114" splitType="Stretch">
+			<staticText>
+				<reportElement x="46" y="16" width="222" height="34" uuid="63560ac7-fe43-4f39-93d1-f14f67771b20"/>
+				<textElement>
+					<font size="26" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Balansräkning - ]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="48" y="58" width="157" height="33" uuid="e8586fe8-60a1-4fa8-a7fc-a39d8cb3d14b"/>
+				<textElement>
+					<font size="24"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{balanceDate}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="281" y="16" width="232" height="33" uuid="2919ea6b-9f17-4b09-bf0a-e62c32a68fcf"/>
+				<textElement>
+					<font size="24" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{companyName}]]></textFieldExpression>
+			</textField>
+		</band>
+	</title>
+	<pageHeader>
+		<band splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band splitType="Stretch"/>
+	</columnHeader>
+	<detail>
+		<band height="68" splitType="Stretch">
+			<textField>
+				<reportElement x="45" y="6" width="100" height="20" uuid="649ccac3-b657-46b1-8486-ec6eaf7b0f87"/>
+				<textElement>
+					<font size="14"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{name}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="455" y="6" width="100" height="20" uuid="a988d91e-024a-4ed7-9afe-19330481c2d6"/>
+				<textElement>
+					<font size="14"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{summa}]]></textFieldExpression>
+			</textField>
+			<subreport>
+				<reportElement x="45" y="31" width="200" height="32" uuid="0d6c2763-a669-4b0a-91aa-95872e0dc76b"/>
+				<subreportParameter name="SUBREPORT_DIR">
+					<subreportParameterExpression><![CDATA[$P{SUBREPORT_DIR}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="entity">
+					<subreportParameterExpression><![CDATA[$P{entity}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="balanceDate">
+					<subreportParameterExpression><![CDATA[$P{balanceDate}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="accountClass">
+					<subreportParameterExpression><![CDATA[$F{accountClass}]]></subreportParameterExpression>
+				</subreportParameter>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression><![CDATA[$P{SUBREPORT_DIR} + "Balansrapport_subreport1.jasper"]]></subreportExpression>
+			</subreport>
+		</band>
+	</detail>
+	<columnFooter>
+		<band splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band height="42" splitType="Stretch">
+			<staticText>
+				<reportElement x="40" y="12" width="100" height="20" uuid="1f9d3ecf-efae-4c5e-ac94-4edd3f7f47b2"/>
+				<textElement>
+					<font size="14"/>
+				</textElement>
+				<text><![CDATA[Resultat]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="455" y="12" width="100" height="20" uuid="24d27082-2569-4cff-8353-1aa2495f26bd"/>
+				<textElement>
+					<font size="14"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{summa_1}]]></textFieldExpression>
+			</textField>
+		</band>
+	</summary>
+</jasperReport>

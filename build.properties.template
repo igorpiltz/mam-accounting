@@ -1,0 +1,7 @@
+
+# Tomcat manager-script user
+manager.password=examplepassword
+manager.username=exampleuser
+
+# Use forward-slashes even on Windows. No trailing slash. 
+catalina.home=X:/example/win/dir
